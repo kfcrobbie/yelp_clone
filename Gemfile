@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem 'haml'
+
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
@@ -37,7 +39,7 @@ group :development, :test do
   gem 'byebug'
 
   gem 'rspec-rails'
- 
+
   gem 'capybara'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
@@ -46,4 +48,3 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
