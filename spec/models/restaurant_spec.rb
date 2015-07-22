@@ -1,8 +1,16 @@
 require 'rails_helper'
 require 'spec_helper'
 
-RSpec.describe Restaurant, type: :model do
+  describe Restaurant, type: :model do
   it { is_expected.to have_many :reviews }
+
+  describe Review, type: :model do
+    it { is_expected.to belong_to :restaurant }
+  end
+
+  describe Restaurant, type: :model do
+    it { is_expected.to have_many(:reviews).dependent(:destroy) }
+  end
 
   it 'is not valid with a name of fewer than three characters' do
     restaurant = Restaurant.new(name: 'kf')
