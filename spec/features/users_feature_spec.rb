@@ -30,4 +30,34 @@ feature "User can sign in and out" do
       expect(page).not_to have_link('Sign up')
     end
   end
+
+  context "when logged in" do
+    before do
+      visit '/'
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+    end
+
+    it "users should be able to create restaurant" do
+      visit '/'
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'Culpeper'
+      click_button 'Create Restaurant'
+      expect(page).to have_content 'Culpeper'
+      expect(current_path).to eq '/restaurants'
+    end
+  end
+
+  context "when not logged in" do
+
+    it "user should not be able to create a restaurant" do
+      visit '/'
+      click_link 'Add a restaurant'
+      expect(page).to have_content 'Log in'
+      expect(current_path).to eq '/users/sign_in'
+    end
+  end
 end
