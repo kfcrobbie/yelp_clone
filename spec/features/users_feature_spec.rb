@@ -60,4 +60,39 @@ feature "User can sign in and out" do
       expect(current_path).to eq '/users/sign_in'
     end
   end
+
+  context "for a restaurant which they have created" do
+
+    it "can be edited" do
+      visit '/'
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+      click_link 'Add a restaurant'
+      fill_in 'Name', with: 'Culpeper'
+      click_button 'Create Restaurant'
+      expect(page).to have_content 'Culpeper'
+      expect(current_path).to eq '/restaurants'
+      click_link 'Edit Culpeper'
+      expect(page).to have_button 'Update Restaurant'
+    end
+
+      it "can be deleted" do
+        visit '/'
+        click_link('Sign up')
+        fill_in('Email', with: 'test@example.com')
+        fill_in('Password', with: 'testtest')
+        fill_in('Password confirmation', with: 'testtest')
+        click_button('Sign up')
+        click_link 'Add a restaurant'
+        fill_in 'Name', with: 'Culpeper'
+        click_button 'Create Restaurant'
+        expect(page).to have_content 'Culpeper'
+        expect(current_path).to eq '/restaurants'
+        click_link 'Delete Culpeper'
+        expect(page).to have_content 'Restaurant deleted successfully'
+    end
+  end
 end
