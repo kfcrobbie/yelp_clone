@@ -95,4 +95,33 @@ feature "User can sign in and out" do
         expect(page).to have_content 'Restaurant deleted successfully'
     end
   end
+
+  context "for a restaurant which they have not created" do
+
+    it "they can not edit them" do
+      visit '/'
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+      expect(current_path).to eq '/restaurants'
+      click_link 'Edit KFC'
+      expect(page).to have_content 'Log in'
+      expect(current_path).to eq '/users/sign_in'
+    end
+
+    it "they can not delete them" do
+      visit '/'
+      click_link('Sign up')
+      fill_in('Email', with: 'test@example.com')
+      fill_in('Password', with: 'testtest')
+      fill_in('Password confirmation', with: 'testtest')
+      click_button('Sign up')
+      expect(current_path).to eq '/restaurants'
+      click_link 'Delete KFC'
+      expect(page).to have_content 'Log in'
+      expect(current_path).to eq '/users/sign_in'
+    end
+  end
 end
