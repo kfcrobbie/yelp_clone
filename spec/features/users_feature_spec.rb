@@ -70,18 +70,22 @@ feature "User can sign in and out" do
 
     it "they can not edit them" do
       sign_up
-      expect(current_path).to eq '/restaurants'
-      click_link 'Edit KFC'
-      expect(page).to have_content 'Log in'
-      expect(current_path).to eq '/users/sign_in'
+      create_restaurant
+      click_link 'Sign out'
+      sign_up_2
+      expect(current_path).to eq '/'
+      click_link 'Edit Culpeper'
+      expect(page).not_to have_button 'Update Restaurant'
     end
 
     it "they can not delete them" do
       sign_up
-      expect(current_path).to eq '/restaurants'
-      click_link 'Delete KFC'
-      expect(page).to have_content 'Log in'
-      expect(current_path).to eq '/users/sign_in'
+      create_restaurant
+      click_link 'Sign out'
+      sign_up_2
+      expect(current_path).to eq '/'
+      click_link 'Delete Culpeper'
+      expect(page).not_to have_content 'Restaurant deleted successfully'
     end
   end
 
@@ -91,6 +95,15 @@ feature "User can sign in and out" do
     fill_in('Email', with: 'test@example.com')
     fill_in('Password', with: 'testtest')
     fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+  end
+
+  def sign_up_2
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'test2@example.com')
+    fill_in('Password', with: 'testtest2')
+    fill_in('Password confirmation', with: 'testtest2')
     click_button('Sign up')
   end
 
