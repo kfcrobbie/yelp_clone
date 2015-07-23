@@ -16,12 +16,7 @@ feature "User can sign in and out" do
 
   context "user signed in on the homepage" do
     before do
-      visit '/'
-      click_link('Sign up')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      fill_in('Password confirmation', with: 'testtest')
-      click_button('Sign up')
+    sign_up
     end
 
     it "should see 'sign out' link" do
@@ -33,20 +28,11 @@ feature "User can sign in and out" do
 
   context "when logged in" do
     before do
-      visit '/'
-      click_link('Sign up')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      fill_in('Password confirmation', with: 'testtest')
-      click_button('Sign up')
+      sign_up
     end
 
     it "users should be able to create restaurant" do
-      visit '/'
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'Culpeper'
-      click_button 'Create Restaurant'
-      expect(page).to have_content 'Culpeper'
+      create_restaurant
       expect(current_path).to eq '/restaurants'
     end
   end
@@ -64,32 +50,16 @@ feature "User can sign in and out" do
   context "for a restaurant which they have created" do
 
     it "can be edited" do
-      visit '/'
-      click_link('Sign up')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      fill_in('Password confirmation', with: 'testtest')
-      click_button('Sign up')
-      click_link 'Add a restaurant'
-      fill_in 'Name', with: 'Culpeper'
-      click_button 'Create Restaurant'
-      expect(page).to have_content 'Culpeper'
+      sign_up
+      create_restaurant
       expect(current_path).to eq '/restaurants'
       click_link 'Edit Culpeper'
       expect(page).to have_button 'Update Restaurant'
     end
 
       it "can be deleted" do
-        visit '/'
-        click_link('Sign up')
-        fill_in('Email', with: 'test@example.com')
-        fill_in('Password', with: 'testtest')
-        fill_in('Password confirmation', with: 'testtest')
-        click_button('Sign up')
-        click_link 'Add a restaurant'
-        fill_in 'Name', with: 'Culpeper'
-        click_button 'Create Restaurant'
-        expect(page).to have_content 'Culpeper'
+        sign_up
+        create_restaurant
         expect(current_path).to eq '/restaurants'
         click_link 'Delete Culpeper'
         expect(page).to have_content 'Restaurant deleted successfully'
@@ -99,12 +69,7 @@ feature "User can sign in and out" do
   context "for a restaurant which they have not created" do
 
     it "they can not edit them" do
-      visit '/'
-      click_link('Sign up')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      fill_in('Password confirmation', with: 'testtest')
-      click_button('Sign up')
+      sign_up
       expect(current_path).to eq '/restaurants'
       click_link 'Edit KFC'
       expect(page).to have_content 'Log in'
@@ -112,16 +77,28 @@ feature "User can sign in and out" do
     end
 
     it "they can not delete them" do
-      visit '/'
-      click_link('Sign up')
-      fill_in('Email', with: 'test@example.com')
-      fill_in('Password', with: 'testtest')
-      fill_in('Password confirmation', with: 'testtest')
-      click_button('Sign up')
+      sign_up
       expect(current_path).to eq '/restaurants'
       click_link 'Delete KFC'
       expect(page).to have_content 'Log in'
       expect(current_path).to eq '/users/sign_in'
     end
+  end
+
+  def sign_up
+    visit '/'
+    click_link('Sign up')
+    fill_in('Email', with: 'test@example.com')
+    fill_in('Password', with: 'testtest')
+    fill_in('Password confirmation', with: 'testtest')
+    click_button('Sign up')
+  end
+
+  def create_restaurant
+    visit '/'
+    click_link 'Add a restaurant'
+    fill_in 'Name', with: 'Culpeper'
+    click_button 'Create Restaurant'
+    expect(page).to have_content 'Culpeper'
   end
 end
